@@ -182,12 +182,12 @@ export default function Login() {
     <main className="flex">
       <div className="h-screen lg:w-[54%] w-screen bg-[url('/images/login-bg.png')] bg-cover bg-center bg-no-repeat flex flex-col justify-between px-12 pb-14">
         {/* Logo */}
-        <div className="w-full flex-col items-center mt-[-15px] lg:flex hidden">
-          <Image
-            src={"/images/logo.svg"}
+        <div className="w-full flex-col items-center mt-[-5%] lg:flex hidden">
+          <img
+            src={"/images/logo.png"}
             width={0}
             height={0}
-            className="w-[48%]"
+            className="w-[50%]"
             alt="HOMEBRIDGE ESTATE Logo"
           />
         </div>
@@ -205,11 +205,11 @@ export default function Login() {
         <div className="lg:w-[70%] w-[95%] py-[15%] lg:bg-white bg-white/70 backdrop-blur-xl rounded-lg p-8 flex flex-col justify-center space-y-6">
           {/* Logo */}
           <div className="w-full flex-col items-center justify-center mt-[-15px] lg:hidden flex">
-            <Image
-              src={"/images/logo.svg"}
+            <img
+              src={"/images/logo.png"}
               width={0}
               height={0}
-              className="w-[75%] mb-[-10%] mt-[-10%]"
+              className="w-[90%] mb-[-15%] mt-[-15%]"
               alt="HOMEBRIDGE ESTATE Logo"
             />
           </div>
