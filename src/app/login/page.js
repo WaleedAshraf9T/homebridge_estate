@@ -317,13 +317,15 @@ export default function Login() {
                 onClick={togglePassword}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
-                <img
+                <Image
                   id="eye-open"
                   src={
                     showPassword
                       ? "/images/eye_closed.svg"
                       : "/images/eye_open.svg"
                   }
+                  width={0}
+                  height={0}
                   alt="Show"
                   className="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                 />
