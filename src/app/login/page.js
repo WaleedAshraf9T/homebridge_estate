@@ -2,13 +2,180 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("member"); // member, artisan, staff
+  const [formData, setFormData] = useState({
+    memberId: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    memberId: "",
+    password: "",
+  });
+  const [isMemberIdFocused, setIsMemberIdFocused] = useState(false);
+
+  const getInitialPrefix = (role) => {
+    switch (role) {
+      case "artisan":
+        return "HBR-ART-";
+      case "staff":
+        return "HBR-EMP-";
+      default:
+        return "HBR-MEM-BB-";
+    }
+  };
+
+  const handleMemberIdFocus = () => {
+    setIsMemberIdFocused(true);
+    if (!formData.memberId) {
+      setFormData(prev => ({
+        ...prev,
+        memberId: getInitialPrefix(selectedRole)
+      }));
+    }
+  };
+
+  const handleMemberIdBlur = () => {
+    setIsMemberIdFocused(false);
+    if (formData.memberId === getInitialPrefix(selectedRole)) {
+      setFormData(prev => ({
+        ...prev,
+        memberId: ""
+      }));
+    }
+  };
+
+  // Update member ID prefix when role changes
+  useEffect(() => {
+    if (isMemberIdFocused) {
+      setFormData(prev => ({
+        ...prev,
+        memberId: getInitialPrefix(selectedRole)
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        memberId: ""
+      }));
+    }
+  }, [selectedRole, isMemberIdFocused]);
+
+  const handleMemberIdChange = (e) => {
+    const prefix = getInitialPrefix(selectedRole);
+    const value = e.target.value;
+
+    // Ensure prefix is always present
+    if (!value.startsWith(prefix)) {
+      setFormData(prev => ({
+        ...prev,
+        memberId: prefix
+      }));
+      return;
+    }
+
+    // Only allow typing after the prefix
+    setFormData(prev => ({
+      ...prev,
+      memberId: value
+    }));
+
+    // Clear error when user starts typing
+    setErrors(prev => ({
+      ...prev,
+      memberId: ""
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    if (id === "member-id") {
+      handleMemberIdChange(e);
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        password: value,
+      }));
+      setErrors((prev) => ({
+        ...prev,
+        password: "",
+      }));
+    }
+  };
+
+  const handleMemberIdKeyDown = (e) => {
+    const prefix = getInitialPrefix(selectedRole);
+    // Prevent backspace from deleting the prefix
+    if (e.key === "Backspace" && formData.memberId.length <= prefix.length) {
+      e.preventDefault();
+    }
+  };
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const getMemberIdPlaceholder = () => {
+    switch (selectedRole) {
+      case "artisan":
+        return "HBR-ART-[Enter Code]";
+      case "staff":
+        return "HBR-EMP-[Enter Code]";
+      default:
+        return "HBR-MEM-BB-[Enter code]";
+    }
+  };
+
+  const validateMemberId = (id) => {
+    if (!id) return "Member ID is required";
+
+    const patterns = {
+      member: /^HBR-MEM-BB-[A-Z0-9-]+$/,
+      artisan: /^HBR-ART-[A-Z0-9-]+$/,
+      staff: /^HBR-EMP-[A-Z0-9-]+$/,
+    };
+
+    if (!patterns[selectedRole].test(id)) {
+      return `Invalid ${
+        selectedRole === "member"
+          ? "Member"
+          : selectedRole === "artisan"
+          ? "Artisan"
+          : "Staff"
+      } ID format`;
+    }
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (!password) return "Password is required";
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password))
+      return "Password must contain both uppercase and lowercase letters";
+    if (!/(?=.*\d)/.test(password))
+      return "Password must contain at least one number";
+    if (!/(?=.*[!@#$%^&*])/.test(password))
+      return "Password must contain at least one special character";
+    return "";
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const memberIdError = validateMemberId(formData.memberId);
+    const passwordError = validatePassword(formData.password);
+
+    setErrors({
+      memberId: memberIdError,
+      password: passwordError,
+    });
+
+    if (!memberIdError && !passwordError) {
+      // Proceed with form submission
+      console.log("Form is valid", formData);
+    }
   };
 
   return (
@@ -49,22 +216,41 @@ export default function Login() {
 
           {/* Sign in Role */}
           <div className="w-full rounded-md bg-[#F6F4F1] flex items-center justify-between p-1">
-            <div className="active px-3 bg-white font-normal py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center">
+            <div
+              onClick={() => setSelectedRole("member")}
+              className={`cursor-pointer px-3 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center transition-all duration-300 ${
+                selectedRole === "member"
+                  ? "bg-white font-normal"
+                  : "font-sohne"
+              }`}
+            >
               Seat Member
             </div>
-            <div className="font-sohne px-3 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center">
+            <div
+              onClick={() => setSelectedRole("artisan")}
+              className={`cursor-pointer px-3 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center transition-all duration-300 ${
+                selectedRole === "artisan"
+                  ? "bg-white font-normal"
+                  : "font-sohne"
+              }`}
+            >
               Artisans-In-Residence
             </div>
-            <div className="font-sohne px-3 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center">
+            <div
+              onClick={() => setSelectedRole("staff")}
+              className={`cursor-pointer px-3 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center transition-all duration-300 ${
+                selectedRole === "staff" ? "bg-white font-normal" : "font-sohne"
+              }`}
+            >
               Staff Access
             </div>
           </div>
 
           {/* Form */}
-          <div className="w-full">
+          <form onSubmit={handleSubmit} className="w-full">
             {/* Member ID Field */}
-            <div class="relative mb-3 mt-4">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div className="relative mt-4">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Image
                   src="/images/person.svg"
                   alt="User"
@@ -76,14 +262,26 @@ export default function Login() {
               <input
                 type="text"
                 id="member-id"
-                placeholder="HBR-MEM-BB-[Enter code]"
-                class="w-full pl-10 pr-4 py-3 border border-[#EDEBE8] rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all duration-200 text-gray-700 placeholder-grey-400 font-sohne font-light text-[0.9rem]"
+                value={formData.memberId}
+                onChange={handleInputChange}
+                onKeyDown={handleMemberIdKeyDown}
+                onFocus={handleMemberIdFocus}
+                onBlur={handleMemberIdBlur}
+                placeholder={getMemberIdPlaceholder()}
+                className={`w-full pl-10 pr-4 py-3 border ${
+                  errors.memberId ? "border-red-500" : "border-[#EDEBE8]"
+                } rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all duration-200 text-gray-700 placeholder-grey-400 font-sohne font-light text-[0.9rem]`}
               />
             </div>
+            {errors.memberId && (
+              <p className="mt-1 text-red-500 text-xs font-sohne">
+                {errors.memberId}
+              </p>
+            )}
 
             {/* Password Field  */}
-            <div class="relative mb-3">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div className="relative mt-3">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Image
                   src="/images/lock.svg"
                   alt="Lock"
@@ -95,15 +293,19 @@ export default function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                value={formData.password}
+                onChange={handleInputChange}
                 placeholder="Password"
-                class="w-full pl-10 pr-12 py-3 border border-[#EDEBE8] rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all duration-200 text-gray-700 placeholder-grey-400 font-sohne font-light text-[0.9rem]"
+                className={`w-full pl-10 pr-12 py-3 border ${
+                  errors.password ? "border-red-500" : "border-[#EDEBE8]"
+                } rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all duration-200 text-gray-700 placeholder-grey-400 font-sohne font-light text-[0.9rem]`}
               />
+
               <button
                 type="button"
                 onClick={togglePassword}
-                class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
-                {/* Eye Open Icon  */}
                 <img
                   id="eye-open"
                   src={
@@ -112,10 +314,15 @@ export default function Login() {
                       : "/images/eye_open.svg"
                   }
                   alt="Show"
-                  class="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                  className="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                 />
               </button>
             </div>
+            {errors.password && (
+              <p className="mt-1 text-red-500 text-xs font-sohne">
+                {errors.password}
+              </p>
+            )}
 
             {/* Remember Me & Forgot Password */}
             <div className="w-full flex items-center justify-between mb-4 mt-6">
@@ -143,7 +350,10 @@ export default function Login() {
 
             {/* Sign in Button */}
             <div className="w-full mt-6">
-              <button className="w-full bg-[#141110] text-white font-sohne font-light text-[0.8rem] px-4 py-4 rounded-lg relative overflow-hidden">
+              <button
+                type="submit"
+                className="w-full bg-[#141110] text-white font-sohne font-light text-[0.8rem] px-4 py-4 rounded-lg relative overflow-hidden hover:opacity-90 transition-opacity duration-200"
+              >
                 <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent opacity-[20%]"></div>
                 <span className="relative z-10 font-sohne font-light text-[0.75rem]">
                   Sign In
@@ -166,7 +376,7 @@ export default function Login() {
                 Contact your Estate Curator for Member Access
               </p>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </main>
