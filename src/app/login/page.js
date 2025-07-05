@@ -182,12 +182,12 @@ export default function Login() {
     <main className="flex">
       <div className="h-screen lg:w-[54%] w-screen bg-[url('/images/login-bg.png')] bg-cover bg-center bg-no-repeat flex flex-col justify-between px-12 pb-14">
         {/* Logo */}
-        <div className="w-full flex-col items-center mt-[-5%] lg:flex hidden">
+        <div className="w-full flex-col items-center mt-[-15px] lg:flex hidden">
           <img
             src={"/images/logo.png"}
             width={0}
             height={0}
-            className="w-[50%]"
+            className="w-[53%]"
             alt="HOMEBRIDGE ESTATE Logo"
           />
         </div>
