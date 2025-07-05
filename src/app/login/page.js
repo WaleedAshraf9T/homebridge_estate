@@ -31,9 +31,9 @@ export default function Login() {
   const handleMemberIdFocus = () => {
     setIsMemberIdFocused(true);
     if (!formData.memberId) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        memberId: getInitialPrefix(selectedRole)
+        memberId: getInitialPrefix(selectedRole),
       }));
     }
   };
@@ -41,9 +41,9 @@ export default function Login() {
   const handleMemberIdBlur = () => {
     setIsMemberIdFocused(false);
     if (formData.memberId === getInitialPrefix(selectedRole)) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        memberId: ""
+        memberId: "",
       }));
     }
   };
@@ -51,14 +51,14 @@ export default function Login() {
   // Update member ID prefix when role changes
   useEffect(() => {
     if (isMemberIdFocused) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        memberId: getInitialPrefix(selectedRole)
+        memberId: getInitialPrefix(selectedRole),
       }));
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        memberId: ""
+        memberId: "",
       }));
     }
   }, [selectedRole, isMemberIdFocused]);
@@ -69,23 +69,23 @@ export default function Login() {
 
     // Ensure prefix is always present
     if (!value.startsWith(prefix)) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        memberId: prefix
+        memberId: prefix,
       }));
       return;
     }
 
     // Only allow typing after the prefix
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      memberId: value
+      memberId: value,
     }));
 
     // Clear error when user starts typing
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
-      memberId: ""
+      memberId: "",
     }));
   };
 
@@ -180,9 +180,9 @@ export default function Login() {
 
   return (
     <main className="flex">
-      <div className="h-screen w-[54%] bg-[url('/images/login-bg.png')] bg-cover bg-center bg-no-repeat flex flex-col justify-between px-12 pb-14">
+      <div className="h-screen lg:w-[54%] w-screen bg-[url('/images/login-bg.png')] bg-cover bg-center bg-no-repeat flex flex-col justify-between px-12 pb-14">
         {/* Logo */}
-        <div className="w-full flex flex-col items-center mt-[-15px]">
+        <div className="w-full flex-col items-center mt-[-15px] lg:flex hidden">
           <Image
             src={"/images/logo.svg"}
             width={0}
@@ -193,7 +193,7 @@ export default function Login() {
         </div>
 
         {/* Heading */}
-        <h1 className="text-white font-ivy-presto-display font-thin text-[2.5rem] leading-[3.5rem]">
+        <h1 className="text-white font-ivy-presto-display font-thin text-[2.5rem] leading-[3.5rem] lg:block hidden">
           Caring for The Most Prestigious
           <br />
           Institutions in the Caribbean
@@ -201,11 +201,22 @@ export default function Login() {
       </div>
 
       {/* Form Container */}
-      <div className="h-screen w-[46%] bg-[#F6F4F1] flex flex-col items-center justify-center">
-        <div className="w-[70%] py-[15%] bg-white rounded-lg p-8 flex flex-col justify-center space-y-6">
+      <div className="h-screen lg:w-[46%] w-full lg:relative absolute flex z-10 lg:bg-[#F6F4F1] flex-col items-center justify-center">
+        <div className="lg:w-[70%] w-[95%] py-[15%] lg:bg-white bg-white/70 backdrop-blur-xl rounded-lg p-8 flex flex-col justify-center space-y-6">
+          {/* Logo */}
+          <div className="w-full flex-col items-center justify-center mt-[-15px] lg:hidden flex">
+            <Image
+              src={"/images/logo.svg"}
+              width={0}
+              height={0}
+              className="w-[75%] mb-[-10%] mt-[-10%]"
+              alt="HOMEBRIDGE ESTATE Logo"
+            />
+          </div>
+
           {/* Heading */}
           <div>
-            <h2 className="text-[1.7rem] font-ivy-presto-text font-thin mb-2 tracking-[-0.05em]">
+            <h2 className="text-[1.7rem] font-ivy-presto-text font-thin mb-2 lg:tracking-[-0.05em]">
               The Estate Command Portal
             </h2>
             <p className="font-sohne font-thin text-[0.9rem] tracking-[-0.03em]">
@@ -218,7 +229,7 @@ export default function Login() {
           <div className="w-full rounded-md bg-[#F6F4F1] flex items-center justify-between p-1">
             <div
               onClick={() => setSelectedRole("member")}
-              className={`cursor-pointer px-3 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center transition-all duration-300 ${
+              className={`cursor-pointer lg:px-3 px-2 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center transition-all duration-300 ${
                 selectedRole === "member"
                   ? "bg-white font-normal"
                   : "font-sohne"
@@ -228,7 +239,7 @@ export default function Login() {
             </div>
             <div
               onClick={() => setSelectedRole("artisan")}
-              className={`cursor-pointer px-3 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center transition-all duration-300 ${
+              className={`cursor-pointer lg:px-3 px-2 py-3 font-light text-[0.82rem] rounded-md tracking-[-0.02em] flex items-center justify-center transition-all duration-300 ${
                 selectedRole === "artisan"
                   ? "bg-white font-normal"
                   : "font-sohne"
@@ -249,7 +260,7 @@ export default function Login() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="w-full">
             {/* Member ID Field */}
-            <div className="relative mt-4">
+            <div className="relative lg:mt-4 mt-2">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Image
                   src="/images/person.svg"
