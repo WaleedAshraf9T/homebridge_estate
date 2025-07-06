@@ -182,17 +182,14 @@ export default function Login() {
     <main className="flex">
       <div className="h-screen lg:w-[54%] w-screen bg-[url('/images/login-bg.png')] bg-cover bg-center bg-no-repeat flex flex-col justify-between px-12 pb-12 pt-9">
         {/* Logo */}
-        <div className="w-full flex-col items-center lg:flex hidden">
-          <div className="relative w-[30%]">
-            <div className="absolute inset-0 bg-white/45 blur-lg rounded-lg -m-4"></div>
-            <Image
-              src={"/images/logo.svg"}
-              width={0}
-              height={0}
-              className="w-full relative z-10"
-              alt="HOMEBRIDGE ESTATE Logo"
-            />
-          </div>
+        <div className="w-full flex-col items-center lg:flex hidden mt-2">
+          <img
+            src={"/images/logo.png"}
+            width={0}
+            height={0}
+            className="w-[30%]"
+            alt="HOMEBRIDGE ESTATE Logo"
+          />
         </div>
 
         {/* Heading */}
