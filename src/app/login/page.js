@@ -180,7 +180,7 @@ export default function Login() {
 
   return (
     <main className="flex">
-      <div className="h-screen lg:w-[54%] w-screen bg-[url('/images/login-bg.png')] bg-cover bg-center bg-no-repeat flex flex-col justify-between px-12 pb-12 pt-9">
+      <div className="h-screen lg:w-[54%] w-screen bg-[url('/images/login-bg.png')] bg-cover bg-top bg-no-repeat flex flex-col justify-between px-12 pb-12 pt-9">
         {/* Logo */}
         <div className="w-full flex-col items-center lg:flex hidden mt-2">
           <img

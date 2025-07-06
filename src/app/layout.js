@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Homebridge Estate",
+  title: "Homebridge Estates",
 };
 
 export default function RootLayout({ children }) {
