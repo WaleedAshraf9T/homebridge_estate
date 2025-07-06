@@ -209,7 +209,7 @@ export default function Login() {
               src={"/images/logo.png"}
               width={0}
               height={0}
-              className="w-[70%] mb-[-5%] mt-[-5%]"
+              className="w-[65%] "
               alt="HOMEBRIDGE ESTATE Logo"
             />
           </div>
